@@ -1,0 +1,136 @@
+
+## AppDatabase.java
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+
+@Database(entities = {Favorite.class},version = 1)
+public abstract class AppDatabase extends RoomDatabase {
+    public abstract FavoriteDao favoriteDao();
+}
+
+
+
+
+## DatabaseClient.java
+import android.content.Context;
+
+import androidx.room.Room;
+
+public class DatabaseClient {
+    private Context mCtx;
+    private static DatabaseClient mInstance;
+
+    //our app database object
+    private AppDatabase appDatabase;
+
+    private DatabaseClient(Context mCtx) {
+        this.mCtx = mCtx;
+
+        //creating the app database with Room database builder
+        //DbFavorite is the name of the database
+        appDatabase = Room.databaseBuilder(mCtx, AppDatabase.class, "DbFavorite").build();
+    }
+
+    public static synchronized DatabaseClient getInstance(Context mCtx) {
+        if (mInstance == null) {
+            mInstance = new DatabaseClient(mCtx);
+        }
+        return mInstance;
+    }
+
+    public AppDatabase getAppDatabase() {
+        return appDatabase;
+    }
+}
+
+
+
+
+# Favorite.java
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import java.io.Serializable;
+
+@Entity
+public class Favorite implements Serializable {
+
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    @ColumnInfo(name = "name")
+    private String name;
+
+    @ColumnInfo(name = "xid")
+    protected int xId;
+
+    @ColumnInfo(name = "type")
+    private String type;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public int getxId() {
+        return xId;
+    }
+
+    public void setxId(int xId) {
+        this.xId = xId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+}
+
+
+
+# FavoriteDao.java //interface
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import java.util.List;
+
+@Dao
+public interface FavoriteDao {
+    @Query("SELECT * FROM favorite")
+    List<Favorite> getAll();
+
+    @Query("SELECT * FROM favorite WHERE xid=:xId AND type=:typee")
+    Favorite getWithxId(int xId,String typee);
+
+    @Insert
+    void insert(Favorite favorite);
+
+    @Query("DELETE FROM favorite WHERE xid=:xId AND type=:typee")
+    void deleteWithxId(int xId,String typee);
+
+    @Delete
+    void delete(Favorite favorite);
+
+    @Update
+    void update(Favorite favorite);
+}
+

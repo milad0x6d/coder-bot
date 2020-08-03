@@ -1,0 +1,159 @@
+# BimariAdapter.java
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
+
+import ir.seniorandroid.darookhone.BR;
+import ir.seniorandroid.darookhone.R;
+import ir.seniorandroid.darookhone.databinding.RowBimariBinding;
+import ir.seniorandroid.darookhone.interfaces.CustomItemClickListener;
+import ir.seniorandroid.darookhone.model.BimariResponse;
+import ir.seniorandroid.darookhone.view.activity.MainActivity;
+import ir.seniorandroid.darookhone.view.fragment.SingleBimariFragment;
+
+public class BimariAdapter extends RecyclerView.Adapter<BimariAdapter.ViewHolder>
+        implements CustomItemClickListener {
+
+    private List<BimariResponse.DataItem> dataModelList;
+    private Context context;
+
+    public BimariAdapter(List<BimariResponse.DataItem> dataModelList, Context context) {
+        this.dataModelList = dataModelList;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        RowBimariBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+                R.layout.row_bimari, parent, false);
+        return new ViewHolder(binding);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        BimariResponse.DataItem dataModel = dataModelList.get(position);
+        holder.bind(dataModel);
+        holder.itemRowBinding.setItemClickListener(this);
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataModelList.size();
+    }
+
+    public void addAll(List<BimariResponse.DataItem> data){
+        dataModelList.addAll(data);
+    }
+
+    @Override
+    public void cardClick(BimariResponse.DataItem model) {
+        MainActivity.Companion.getStatic().addFragment(new SingleBimariFragment(model.getId()));
+    }
+
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        RowBimariBinding itemRowBinding;
+
+        public ViewHolder(RowBimariBinding itemView) {
+            super(itemView.getRoot());
+            this.itemRowBinding = itemView;
+        }
+
+        void bind(Object object) {
+            itemRowBinding.setVariable(BR.model, object);
+            itemRowBinding.executePendingBindings();
+        }
+    }
+
+}
+
+
+
+# row_biari.xml
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="model"
+            type="ir.seniorandroid.darookhone.model.BimariResponse.DataItem" />
+        <variable
+            name="itemClickListener"
+            type="ir.seniorandroid.darookhone.interfaces.CustomItemClickListener" />
+    </data>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginBottom="2dp"
+            android:padding="8dp"
+            android:gravity="center_vertical"
+            android:background="#fff"
+            android:foreground="?android:selectableItemBackground"
+            android:onClick="@{() -> itemClickListener.cardClick(model)}"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ir.seniorandroid.darookhone.customview.CustomTextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:textSize="@dimen/item_row"
+                android:singleLine="true"
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:text="@{model.mozo}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        </LinearLayout>
+
+</layout>
+
+
+
+# CustomItemClickListener.kt // interface
+import ir.seniorandroid.darookhone.model.BimariResponse
+import ir.seniorandroid.darookhone.room.Favorite
+
+interface CustomItemClickListener {
+    fun cardClick(model: BimariResponse.DataItem?)
+}
+
+
+
+
+# BimariResponse.kt
+import com.google.gson.annotations.SerializedName
+
+class BimariResponse {
+
+    @SerializedName("status")
+    val status : List<StatusItem>? = null
+
+    @SerializedName("data")
+    val data : List<DataItem>? = null
+
+    @SerializedName("meta")
+    val meta : List<MetaItem>? = null
+
+    class DataItem{
+        val id : Int? = null
+        val mozo : String? = null
+    }
+
+    class StatusItem {
+
+    }
+
+    class MetaItem {
+    }
+
+}
+

@@ -1,0 +1,50 @@
+import android.content.Context
+import android.content.res.TypedArray
+import android.graphics.Typeface
+import android.util.AttributeSet
+import android.util.TypedValue
+import androidx.appcompat.widget.AppCompatTextView
+import ir.seniorandroid.darookhone.R
+
+
+class CustomTextView : AppCompatTextView {
+
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(
+        context,
+        attrs,
+        defStyle
+    ) {
+        init(attrs)
+    }
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+        init(attrs)
+    }
+
+    constructor(context: Context) : super(context) {
+        init(null)
+    }
+
+    private fun init(attrs: AttributeSet?) {
+        val tf = Typeface.createFromAsset(context.assets, "fonts/IRAN Sans.ttf")
+        typeface = tf
+        if (null != attrs) {
+            val textSizeAttr = intArrayOf(android.R.attr.textSize)
+            val indexOfAttrTextSize = 0
+            val a = context.obtainStyledAttributes(attrs, textSizeAttr)
+            val textSize = a.getDimensionPixelSize(indexOfAttrTextSize, -1)
+            a.recycle()
+            if (textSize == -1)
+                setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(R.dimen.normal_text_size)
+                )
+        }
+    }
+
+    fun makeBold() {
+        val tf = Typeface.createFromAsset(context.assets, "fonts/IRANSans_Bold.ttf")
+        typeface = tf
+    }
+
+}

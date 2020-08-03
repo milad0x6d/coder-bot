@@ -1,0 +1,128 @@
+    private fun applyFontToMenuItem() {
+        val menu = navigation.menu
+        for (i in 0 until menu.size()) {
+            val font = Typeface.createFromAsset(assets, "fonts/IRAN Sans.ttf")
+            val mNewTitle = SpannableString(menu.getItem(i).title)
+            mNewTitle.setSpan(
+                CustomTypefaceSpan("", font),
+                0,
+                mNewTitle.length,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
+            menu.getItem(i).title = mNewTitle
+        }
+
+    }
+
+navigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id. -> {
+                    
+                }
+                R.id. -> {
+
+                }
+                R.id. -> {
+                    
+                }
+                R.id. -> {
+
+                }
+
+            }
+            closeDrawer()
+            true
+        }
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:layoutDirection="ltr"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/baseCoordinatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/content_wrapper_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                tools:context=".activity.MasterNavigationBarActivity">
+
+                <FrameLayout
+                    android:id="@+id/frame_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:animateLayoutChanges="true"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        app:elevation="10dp"
+        android:layout_height="wrap_content">
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:fitsSystemWindows="false"
+            android:layoutDirection="rtl"
+            app:itemIconTint="@color/colorPrimary"
+            app:itemTextColor="#716C6C"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_navigation_items"/>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <item
+        android:id="@+id/"
+        android:icon="@drawable/"
+        android:title="" />
+    <item
+        android:id="@+id/"
+        android:icon="@drawable/"
+        android:title="" />
+    <item
+        android:id="@+id/"
+        android:icon="@drawable/"
+        android:title="" />
+    <item
+        android:id="@+id/"
+        android:icon="@drawable/"
+        android:title="" />
+</menu>
