@@ -189,3 +189,15 @@ LinearLayout bottom_sheet;
     }
 
 
+
+# hide when outside clicked
+    @Override public boolean dispatchTouchEvent(MotionEvent event){
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            if (sheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED) {
+                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
+
+
